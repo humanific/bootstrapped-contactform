@@ -14,7 +14,7 @@ Author URI: http://humanific.com
 
 function bootstrapped_contact_form($subject,$to, $class=''){
   
-if($_POST) {
+if( is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_verify_nonce( $_POST['contactsecurity'], 'contactform' )) {
     $headers = 'From: '.$_POST['f_name'].' <'.$_POST['email'].'>' . "\r\n";
     $s = is_array($subject) ? $_POST['f_subject'] : $subject ;
     $msg = $s. "\r\nurl : ".$_SERVER['HTTP_REFERER']. "\r\nfrom : ".$_POST['f_name']." ".$_POST['email']. "\r\n\r\n".$_POST['f_msg'];
@@ -40,7 +40,7 @@ if($_POST) {
   }
 
 ?>
-<script src="<?php echo get_stylesheet_directory_uri()?>/js/jquery.validate.js"></script>
+
 <script>
 
   jQuery(document).ready(function($){
@@ -56,7 +56,7 @@ if($_POST) {
       <div class="form-group">
       <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_subject"><?php _e('Subject','arthus'); ?></label>
       <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><select name="f_subject" class="form-control ">
-      
+      <?php wp_nonce_field('contactform','contactsecurity'); ?>
       <?php foreach($subject as $k=>$s) :?>
       <option <?php if($_REQUEST['subject']==$k) { echo 'selected' ;} ?> value="<?php echo $k; ?>"><?php echo $s; ?></option>
       <?php endforeach;?>
@@ -106,5 +106,11 @@ function bootstrapped_contactform_shortcode( $atts, $content = null ) {
 
 add_shortcode( 'contactform', 'bootstrapped_contactform_shortcode' );
 
+function bootstrapped_contactform_scripts() {
+  wp_enqueue_script( 'jquery.validate', plugins_url( 'jquery.validate.min.js' , __FILE__ ), array( 'jquery') );
+}
+
+
+add_action( 'wp_enqueue_scripts', 'bootstrapped_contactform_scripts' );
 
 ?>

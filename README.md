@@ -1,4 +1,4 @@
-# [Bootstrapped contactform Wordpress Plugin(http://bootstrapped.humanific.com)
+# [Bootstrapped contactform Wordpress Plugin](http://bootstrapped.humanific.com)
 
 Bootstrap contactform plugin for wordpress
 
