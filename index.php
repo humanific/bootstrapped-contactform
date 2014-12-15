@@ -104,7 +104,7 @@ function bootstrapped_contactform_shortcode( $atts, $content = null ) {
   return ob_get_clean();
 }
 
-add_shortcode( 'contactform', 'contactform_shortcode' );
+add_shortcode( 'contactform', 'bootstrapped_contactform_shortcode' );
 
 
 ?>
