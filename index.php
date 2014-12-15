@@ -13,8 +13,8 @@ Author URI: http://humanific.com
 */
 
 function bootstrapped_contact_form($subject,$to, $class=''){
-  
-if( is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_verify_nonce( $_POST['contactsecurity'], 'contactform' )) {
+
+if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_verify_nonce( $_POST['contactsecurity'], 'contactform' )) {
     $headers = 'From: '.$_POST['f_name'].' <'.$_POST['email'].'>' . "\r\n";
     $s = is_array($subject) ? $_POST['f_subject'] : $subject ;
     $msg = $s. "\r\nurl : ".$_SERVER['HTTP_REFERER']. "\r\nfrom : ".$_POST['f_name']." ".$_POST['email']. "\r\n\r\n".$_POST['f_msg'];
@@ -44,7 +44,7 @@ if( is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_veri
 <script>
 
   jQuery(document).ready(function($){
-     $("#contactform").validate();
+     $("#contactform").validate({errorClass: "text-danger"});
   })
   jQuery.extend(jQuery.validator.messages, {
         required: "<?php _e("This field is mandatory",'arthus'); ?>", email: "<?php _e('Please check this email address','arthus'); ?>"
@@ -52,11 +52,12 @@ if( is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_veri
    });
 </script>
 <form method="post" id="contactform"  class="<?php echo $class;?>"  role="form">
+      <?php echo wp_nonce_field('contactform','contactsecurity'); ?>
       <?php if(is_array($subject)):?>
       <div class="form-group">
       <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_subject"><?php _e('Subject','arthus'); ?></label>
       <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><select name="f_subject" class="form-control ">
-      <?php wp_nonce_field('contactform','contactsecurity'); ?>
+      
       <?php foreach($subject as $k=>$s) :?>
       <option <?php if($_REQUEST['subject']==$k) { echo 'selected' ;} ?> value="<?php echo $k; ?>"><?php echo $s; ?></option>
       <?php endforeach;?>
@@ -87,7 +88,7 @@ if( is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_veri
       <div class="form-group">
         <input type="hidden" value="<?php echo $_GET['origin']?>" name="origin" />
         <div class="<?php if($class=='form-horizontal') { echo 'col-sm-offset-3 col-sm-9';}?>">
-          <input type="submit" class="btn btn-primary" value="<?php _e('Send','arthus'); ?>" />
+          <input type="submit" class="btn btn-default btn-lg" value="<?php _e('Send','arthus'); ?>" />
         </div>
       </div>
     </form>
@@ -99,7 +100,8 @@ function bootstrapped_contactform_shortcode( $atts, $content = null ) {
    ob_start();
    bootstrapped_contact_form(
     isset($atts['subject']) ? $atts['subject'] : __('Information request sent from','bootstrapped')." ".get_permalink( $post->ID ),
-  isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' )
+  isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' ),
+    isset($atts['class']) ? $atts['class'] : ''
   );
   return ob_get_clean();
 }
