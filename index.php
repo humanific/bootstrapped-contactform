@@ -99,7 +99,7 @@ function bootstrapped_contactform_shortcode( $atts, $content = null ) {
    global $post;
    ob_start();
    bootstrapped_contact_form(
-    isset($atts['subject']) ? $atts['subject'] : __('Information request sent from','bootstrapped')." ".get_permalink( $post->ID ),
+    isset($atts['subject']) ? $atts['subject'] : __('Information request sent from','bootstrapped-contactform')." ".get_permalink( $post->ID ),
   isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' ),
     isset($atts['class']) ? $atts['class'] : ''
   );
@@ -114,5 +114,14 @@ function bootstrapped_contactform_scripts() {
 
 
 add_action( 'wp_enqueue_scripts', 'bootstrapped_contactform_scripts' );
+
+
+
+
+function bootstrapped_contactform_load_textdomain() {
+  load_plugin_textdomain('bootstrapped-contactform', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/'); 
+}
+add_action('init', 'bootstrapped_contactform_load_textdomain');
+
 
 ?>
