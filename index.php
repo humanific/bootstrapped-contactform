@@ -44,12 +44,14 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
 <script>
 
   jQuery(document).ready(function($){
-     $("#contactform").validate({errorClass: "text-danger"});
+     $("#contactform").validate({
+      errorClass: "text-danger",
+      messages: {        
+        f_name: "<?php _e('This field is mandatory','bootstrapped-contactform'); ?>", 
+        f_msg: "<?php _e('This field is mandatory','bootstrapped-contactform'); ?>", 
+        email: "<?php _e('Please check this email address','bootstrapped-contactform'); ?>"}
+      });
   })
-  jQuery.extend(jQuery.validator.messages, {
-        required: "<?php _e("This field is mandatory",'bootstrapped-contactform'); ?>", email: "<?php _e('Please check this email address','bootstrapped-contactform'); ?>"
-
-   });
 </script>
 <form method="post" id="contactform"  class="<?php echo $class;?>"  role="form">
       <?php echo wp_nonce_field('contactform','contactsecurity'); ?>
