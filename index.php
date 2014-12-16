@@ -21,7 +21,7 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
     
     if(wp_mail( $to,$s , $msg, $headers )){
       echo '<div class="alert alert-success">';
-       _e('Thanks, your message has been sent.','arthus');
+       _e('Thanks, your message has been sent.','bootstrapped-contactform');
       echo '</div>';
       $time = current_time('mysql');
       $data = array(
@@ -34,7 +34,7 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
       wp_insert_comment($data);
     }else{
         echo '<div class="alert alert-danger">';
-         _e('Sorry, something went wrong.','arthus');
+         _e('Sorry, something went wrong.','bootstrapped-contactform');
         echo '</div>';
     }
   }
@@ -47,7 +47,7 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
      $("#contactform").validate({errorClass: "text-danger"});
   })
   jQuery.extend(jQuery.validator.messages, {
-        required: "<?php _e("This field is mandatory",'arthus'); ?>", email: "<?php _e('Please check this email address','arthus'); ?>"
+        required: "<?php _e("This field is mandatory",'bootstrapped-contactform'); ?>", email: "<?php _e('Please check this email address','bootstrapped-contactform'); ?>"
 
    });
 </script>
@@ -55,7 +55,7 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
       <?php echo wp_nonce_field('contactform','contactsecurity'); ?>
       <?php if(is_array($subject)):?>
       <div class="form-group">
-      <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_subject"><?php _e('Subject','arthus'); ?></label>
+      <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_subject"><?php _e('Subject','bootstrapped-contactform'); ?></label>
       <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><select name="f_subject" class="form-control ">
       
       <?php foreach($subject as $k=>$s) :?>
@@ -71,24 +71,24 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
         }
       ?>
           <div class="form-group">
-            <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_name"><?php _e('Your name','arthus'); ?>*</label>
+            <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_name"><?php _e('Your name','bootstrapped-contactform'); ?>*</label>
             <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><input type="text" value="<?php echo $current_user->display_name; ?>" name="f_name" class="form-control required " />
             </div>
           </div>
           <div class="form-group">
-            <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="email"><?php _e('Your email','arthus'); ?>*</label>
+            <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="email"><?php _e('Your email','bootstrapped-contactform'); ?>*</label>
             <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><input type="text" value="<?php echo $current_user->user_email; ?>" name="email"  class="form-control required email " />
             </div>
           </div>
           <div class="form-group">
-            <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_msg"><?php _e('Your question','arthus'); ?>*</label>
+            <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_msg"><?php _e('Your message','bootstrapped-contactform'); ?>*</label>
             <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><textarea name="f_msg" class="form-control required " style="height:200px"></textarea>
             </div>
           </div>
       <div class="form-group">
         <input type="hidden" value="<?php echo $_GET['origin']?>" name="origin" />
         <div class="<?php if($class=='form-horizontal') { echo 'col-sm-offset-3 col-sm-9';}?>">
-          <input type="submit" class="btn btn-default btn-lg" value="<?php _e('Send','arthus'); ?>" />
+          <input type="submit" class="btn btn-default btn-lg" value="<?php _e('Send','bootstrapped-contactform'); ?>" />
         </div>
       </div>
     </form>
