@@ -100,9 +100,16 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
 function bootstrapped_contactform_shortcode( $atts, $content = null ) {
    global $post;
    ob_start();
+   if(isset($atts['subject'])){
+     $subjects = explode(';', $atts['subject']);
+     if(count($subjects)==1) $subjects = $subjects[0];
+   }else{
+     $subjects = __('Information request sent from','bootstrapped-contactform')." ".get_permalink( $post->ID );
+   }
+
    bootstrapped_contact_form(
-    isset($atts['subject']) ? $atts['subject'] : __('Information request sent from','bootstrapped-contactform')." ".get_permalink( $post->ID ),
-  isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' ),
+    $subjects,
+    isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' ),
     isset($atts['class']) ? $atts['class'] : ''
   );
   return ob_get_clean();
