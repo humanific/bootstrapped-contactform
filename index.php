@@ -12,7 +12,27 @@ Version: 0.1
 Author URI: http://humanific.com
 */
 
-function bootstrapped_contact_form($subject,$to, $class=''){
+function bootstrapped_contact_form($atts,$content=null){
+ global $post;
+ ob_start();
+ if(isset($atts['subject'])){
+   $subjects = explode(';', $atts['subject']);
+   if(count($subjects)==1) $subjects = $subjects[0];
+ }else{
+   $subjects = __('Information request sent from','bootstrapped-contactform')." ".get_permalink( $post->ID );
+ }
+
+if($atts['layout'] == 'horizontal' || $atts['class'] == 'form-horizontal' ){
+  $class='form-horizontal';
+}
+
+
+
+$to = isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' );
+
+
+
+
 
 if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_verify_nonce( $_POST['contactsecurity'], 'contactform' )) {
     $headers = 'From: '.$_POST['f_name'].' <'.$_POST['email'].'>' . "\r\n";
@@ -21,7 +41,11 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
     
     if(wp_mail( $to,$s , $msg, $headers )){
       echo '<div class="alert alert-success">';
-       _e('Thanks, your message has been sent.','bootstrapped-contactform');
+       if($content){
+          echo $content;
+       }else{
+          _e('Thanks, your message has been sent.','bootstrapped-contactform');
+       }
       echo '</div>';
       $time = current_time('mysql');
       $data = array(
@@ -55,12 +79,12 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
 </script>
 <form method="post" id="contactform"  class="<?php echo $class;?>"  role="form">
       <?php echo wp_nonce_field('contactform','contactsecurity'); ?>
-      <?php if(is_array($subject)):?>
+      <?php if(is_array($subjects)):?>
       <div class="form-group">
       <label class="<?php if($class=='form-horizontal') { echo 'col-sm-3';}?> control-label" for="f_subject"><?php _e('Subject','bootstrapped-contactform'); ?></label>
       <div class="<?php if($class=='form-horizontal') { echo 'col-sm-9';}?>"><select name="f_subject" class="form-control ">
       
-      <?php foreach($subject as $k=>$s) :?>
+      <?php foreach($subjects as $k=>$s) :?>
       <option <?php if($_REQUEST['subject']==$k) { echo 'selected' ;} ?> value="<?php echo $k; ?>"><?php echo $s; ?></option>
       <?php endforeach;?>
 
@@ -95,27 +119,11 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
       </div>
     </form>
     <?php
-}
 
-function bootstrapped_contactform_shortcode( $atts, $content = null ) {
-   global $post;
-   ob_start();
-   if(isset($atts['subject'])){
-     $subjects = explode(';', $atts['subject']);
-     if(count($subjects)==1) $subjects = $subjects[0];
-   }else{
-     $subjects = __('Information request sent from','bootstrapped-contactform')." ".get_permalink( $post->ID );
-   }
-
-   bootstrapped_contact_form(
-    $subjects,
-    isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' ),
-    isset($atts['class']) ? $atts['class'] : ''
-  );
   return ob_get_clean();
 }
 
-add_shortcode( 'contactform', 'bootstrapped_contactform_shortcode' );
+add_shortcode( 'contactform', 'bootstrapped_contact_form' );
 
 function bootstrapped_contactform_scripts() {
   wp_enqueue_script( 'jquery.validate', plugins_url( 'jquery.validate.min.js' , __FILE__ ), array( 'jquery') );
