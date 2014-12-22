@@ -26,13 +26,7 @@ if($atts['layout'] == 'horizontal' || $atts['class'] == 'form-horizontal' ){
   $class='form-horizontal';
 }
 
-
-
 $to = isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' );
-
-
-
-
 
 if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] && wp_verify_nonce( $_POST['contactsecurity'], 'contactform' )) {
     $headers = 'From: '.$_POST['f_name'].' <'.$_POST['email'].'>' . "\r\n";
