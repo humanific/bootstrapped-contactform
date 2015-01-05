@@ -63,11 +63,20 @@ if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name']&& $_POST['f_msg'] 
 
   jQuery(document).ready(function($){
      $("#contactform").validate({
-      errorClass: "text-danger",
+      errorClass: "text-danger small", 
+      highlight: function(element) {
+          $(element).closest('.form-group').addClass('has-error');
+      },
+      unhighlight: function(element) {
+          $(element).closest('.form-group').removeClass('has-error');
+      },
+      errorPlacement: function(error, element) {
+          element.closest('div').append(error);
+      },
       messages: {        
-        f_name: "<?php _e('This field is mandatory','bootstrapped-contactform'); ?>", 
-        f_msg: "<?php _e('This field is mandatory','bootstrapped-contactform'); ?>", 
-        email: "<?php _e('Please check this email address','bootstrapped-contactform'); ?>"}
+        f_name: "<?php _e('This field is required','bootstrapped-contactform'); ?>", 
+        f_msg: "<?php _e('This field is required','bootstrapped-contactform'); ?>", 
+        email: "<?php _e('Please enter a valid email address','bootstrapped-contactform'); ?>"}
       });
   })
 </script>
