@@ -30,7 +30,7 @@ function bootstrapped_contact_form($atts,$content=null){
   $to = isset($atts['to']) ? $atts['to'] : get_bloginfo( 'admin_email' );
 
   if( $_POST && is_email( $_POST['email'] ) && $_POST['f_name'] && $_POST['f_msg'] && wp_verify_nonce( $_POST['contactsecurity'], 'contactform' )) {
-    $headers = array('From: '.$_POST['f_name'].' <'.$_POST['email'].'>', 'Reply-To: .$_POST['email']);
+    $headers = array('From: '.$_POST['f_name'].' <'.$_POST['email'].'>', 'Reply-To: '.$_POST['email']);
     $s = isset($subject) ? $subject : $_POST['f_subject'];
     $msg = $s. "\r\nURL : ".$_SERVER['HTTP_REFERER']. "\r\nFrom : ".$_POST['f_name']." ".$_POST['email']. "\r\n\r\n".$_POST['f_msg'];
     
